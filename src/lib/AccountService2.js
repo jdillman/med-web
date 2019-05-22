@@ -8,11 +8,11 @@ const getCards = async () => new Promise(resolve => setTimeout(() => resolve(res
 // Declare your customizations, used by fetchMiddleware
 getCards.successSelector = response => response.cards;
 getCards.injections = [
-  withPostSuccess((dispatch, response, state) => alert(`Fetched at: ${state.hearthstone.count}`))
+  withPostSuccess((dispatch, response, state) => alert(`Fetched at: ${state.hearthstone.count}`)),
 ];
 
 const service = {
-  getCards
+  getCards,
 };
 
 // Export your service by also specifying the reducer name and the target for each action.
