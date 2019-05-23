@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { actionCreators as accounts } from '../../lib/AccountService';
 
 // import PatientList from '../../containers/PatientListContainer';
 // import TaskList from '../../containers/TaskListContainer';
 // 
 // import './HomeView.css';
 
-export default class HomeView extends Component {
+class HomeView extends Component {
   componentDidMount() {
-    // Compmounted
+    const { getAccounts } = this.props;
+
+    getAccounts();
   }
 
   render() {
@@ -20,3 +24,7 @@ export default class HomeView extends Component {
     );
   }
 }
+
+export default connect(null, {
+  getAccounts: accounts.getAll,
+})(HomeView)

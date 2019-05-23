@@ -54,6 +54,7 @@
     "redux": "^4.0.1",
     "redux-recompose": "^2.1.5",
     "redux-rest-resource": "^0.22.1",
+    "redux-thunk": "^2.3.0",
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
     "semver": "6.0.0",
