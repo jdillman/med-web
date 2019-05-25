@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { actionCreators as accounts } from '../../lib/AccountService';
+import { Entities } from '../../lib/EntityService';
 
 // import PatientList from '../../containers/PatientListContainer';
 // import TaskList from '../../containers/TaskListContainer';
@@ -26,5 +26,5 @@ class HomeView extends Component {
 }
 
 export default connect(null, {
-  getAccounts: accounts.getAll,
+  getAccounts: Entities.accounts.getAll,
 })(HomeView)

@@ -9,10 +9,10 @@ import thunk from 'redux-thunk';
 
 import { fetchMiddleware } from 'redux-recompose';
 
-import accounts from './lib/AccountService'
+import entities from './lib/EntityService'
 
 const rootReducer = combineReducers({
-  accounts,
+  entities,
 });
 
 const middleware = applyMiddleware(thunk, fetchMiddleware);
