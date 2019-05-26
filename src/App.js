@@ -11,6 +11,7 @@ import AccountView from './components/views/AccountView';
 import AdminView from './components/views/AdminView';
 
 import './App.css';
+import './normalize.css';
 
 const Routes = () => (
   <React.Fragment>

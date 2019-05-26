@@ -3,12 +3,24 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { entities } from '../../lib/entityService';
 
+import View from './View';
+
 // import PatientList from '../../containers/PatientListContainer';
 // import TaskList from '../../containers/TaskListContainer';
 // 
 // import './HomeView.css';
 
-class HomeView extends Component {
+const AdminTable = ({ data }) => {
+  return data.map(item => {
+    return (
+      <p key={item.id}>
+        <Link to={`/admin/manage/${item.id}`}>{item.name}</Link>
+      </p>
+    );
+  })
+};
+
+class AdminView extends Component {
   componentDidMount() {
     const { getAccounts } = this.props;
 
@@ -19,21 +31,10 @@ class HomeView extends Component {
     const { accounts, locations } = this.props;
 
     return (
-      <div>
-        <section>
-          <p>Admin - Go build something jonathan</p>
-          {
-            accounts.map(account => {
-              const mangeAccountUrl = `/admin/manage/${account.id}`;
-              return (
-                <p>
-                  <Link to={mangeAccountUrl}>{account.name}</Link>
-                </p>
-              );
-            })
-          }
-        </section>
-      </div>
+      <View type="simple">
+        <p>Admin - Go build something jonathan</p>
+        <AdminTable data={accounts} />
+      </View>
     );
   }
 }
@@ -44,4 +45,4 @@ const mapState = ({ entities: { accounts, locations } }) => ({
 
 export default connect(mapState, {
   getAccounts: entities.accounts.getAll,
-})(HomeView)
+})(AdminView)

@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { entities } from '../../lib/entityService';
 
+import View from './View';
+
 // import PatientList from '../../containers/PatientListContainer';
 // import TaskList from '../../containers/TaskListContainer';
 // 
@@ -16,17 +18,13 @@ class HomeView extends Component {
   }
 
   render() {
-
     const admin = true;
 
     return (
-      <div>
-        <section>
-          <p>Home</p>
-
-          { admin && <Link to="/admin">Admin</Link> }
-        </section>
-      </div>
+      <View type="simple-nav">
+        <p>Home</p>
+        { admin && <Link to="/admin">Admin</Link> }
+      </View>
     );
   }
 }
