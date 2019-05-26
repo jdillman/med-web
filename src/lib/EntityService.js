@@ -4,33 +4,34 @@ import {
   completeState,
   completeReducer,
 } from 'redux-recompose';
+import api from './api';
 
-export const actions = createTypes(['CREATE', 'READ', 'UPDATE', 'DELETE'], '@ENTITY');
-const initialState = completeState({
-  accounts: {},
+const entityList = {
+  accounts: {
+    byId: {},
+    allIds: [],
+    sortedIds: [],
+  },
   locations: {},
   users: {},
   people: {},
-});
+};
 
-// don't judge :D
-const api = resource => {
-  return new Promise((resolve, reject) => {
-    fetch(`http://localhost:5001/api/v1/${resource}`)
-    .then(response => {
-      if (!response.ok) return resolve(response)
-      return response.json();
-    })
-    .then(data => resolve({ ok: true, data }))
-    .catch(err => reject(err))
-  });
-}
+export const actions = createTypes(['CREATE', 'READ', 'UPDATE', 'DELETE'], '@ENTITY');
+const initialState = completeState(entityList);
 
 function normalizeData(data = []) {
-  return data.reduce((acc, item) => {
+  const allIds = [];
+  const byId = data.reduce((acc, item) => {
     acc[item.id] = item;
+    allIds.push(item.id);
     return acc;
   }, {});
+
+  return {
+    allIds,
+    byId,
+  }
 }
 
 const actionCreator = (type, target) => {
@@ -44,10 +45,12 @@ const actionCreator = (type, target) => {
   });
 }
 
-export const Entities = {
+export const entities = {
   accounts: {
     getAll: actionCreator(actions.READ, 'accounts'),
-    get: actionCreator(actions.READ, 'accounts', '/{id}'),
+    get: actionCreator(actions.READ, 'accounts'),
+    create: actionCreator(actions.CREATE, 'accounts'),
+    delete: actionCreator(actions.DELETE, 'accounts'),
   },
   locations: {
     getAll: actionCreator(actions.READ, 'locations'),

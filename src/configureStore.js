@@ -6,15 +6,14 @@ import {
 } from 'redux';
 
 import thunk from 'redux-thunk';
-
 import { fetchMiddleware } from 'redux-recompose';
-
-import entities from './lib/EntityService'
+import entityReducer from './lib/entityService'
 
 const rootReducer = combineReducers({
-  entities,
+  entities: entityReducer,
 });
 
+// entities use thunks and fetchMiddlewar
 const middleware = applyMiddleware(thunk, fetchMiddleware);
 
 // eslint-disable-next-line

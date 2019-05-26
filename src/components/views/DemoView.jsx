@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { entities } from '../../lib/entityService';
 
 // import PatientList from '../../containers/PatientListContainer';
@@ -16,15 +15,11 @@ class HomeView extends Component {
   }
 
   render() {
-
-    const admin = true;
-
     return (
       <div>
         <section>
-          <p>Home</p>
-
-          { admin && <Link to="/admin">Admin</Link> }
+          <p>Demo Page, sell it here</p>
+          
         </section>
       </div>
     );

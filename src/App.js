@@ -4,13 +4,21 @@ import { Route } from 'react-router-dom';
 
 // import { appStart } from './modules/UIModule';
 import HomeView from './components/views/HomeView';
-// import PatientsView from './components/views/HomeView';
-// <Route exact path="/patients" component={PatientsView} />
+import DemoView from './components/views/DemoView';
+
+// todo dynamic import
+import AccountView from './components/views/AccountView';
+import AdminView from './components/views/AdminView';
+
 import './App.css';
 
 const Routes = () => (
   <React.Fragment>
     <Route exact path="/" component={HomeView} />
+    <Route exact path="/demo" component={DemoView} />
+
+    <Route exact path="/admin/accounts" component={AccountView} />
+    <Route exact path="/admin" component={AdminView} />
   </React.Fragment>
 );
 

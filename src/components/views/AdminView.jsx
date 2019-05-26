@@ -16,21 +16,32 @@ class HomeView extends Component {
   }
 
   render() {
-
-    const admin = true;
+    const { accounts, locations } = this.props;
 
     return (
       <div>
         <section>
-          <p>Home</p>
-
-          { admin && <Link to="/admin">Admin</Link> }
+          <p>Admin - Go build something jonathan</p>
+          {
+            accounts.map(account => {
+              const mangeAccountUrl = `/admin/manage/${account.id}`;
+              return (
+                <p>
+                  <Link to={mangeAccountUrl}>{account.name}</Link>
+                </p>
+              );
+            })
+          }
         </section>
       </div>
     );
   }
 }
 
-export default connect(null, {
+const mapState = ({ entities: { accounts, locations } }) => ({
+  accounts: accounts.allIds.map(id => accounts.byId[id]),
+});
+
+export default connect(mapState, {
   getAccounts: entities.accounts.getAll,
 })(HomeView)
