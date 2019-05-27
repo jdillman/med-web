@@ -14,7 +14,7 @@ const AdminTable = ({ data }) => {
   return data.map(item => {
     return (
       <p key={item.id}>
-        <Link to={`/admin/manage/${item.id}`}>{item.name}</Link>
+        <Link to={`/admin/account/${item.id}`}>{item.name}</Link>
       </p>
     );
   })

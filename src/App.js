@@ -18,7 +18,7 @@ const Routes = () => (
     <Route exact path="/" component={HomeView} />
     <Route exact path="/demo" component={DemoView} />
 
-    <Route exact path="/admin/accounts" component={AccountView} />
+    <Route exact path="/admin/account/:id" component={AccountView} />
     <Route exact path="/admin" component={AdminView} />
   </React.Fragment>
 );
