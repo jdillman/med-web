@@ -4,63 +4,74 @@ import {
   completeState,
   completeReducer,
 } from 'redux-recompose';
-import api from './api';
 
-const entityList = {
-  accounts: {
-    byId: {},
-    allIds: [],
-    sortedIds: [],
-  },
-  locations: {},
-  users: {},
-  people: {},
+import api from './api';
+import entityConfig from '../configureEntities';
+
+const entityState = {
+  byId: {},
+  allIds: [],
+  sortedIds: [],
 };
 
-export const actions = createTypes(['CREATE', 'READ', 'UPDATE', 'DELETE'], '@ENTITY');
-const initialState = completeState(entityList);
-
-function normalizeData(data = []) {
-  const allIds = [];
-  const byId = data.reduce((acc, item) => {
-    acc[item.id] = item;
-    allIds.push(item.id);
-    return acc;
-  }, {});
-
-  return {
-    allIds,
-    byId,
-  }
-}
-
-const actionCreator = (type, target) => {
+const actions = createTypes(['CREATE', 'READ', 'UPDATE', 'DELETE'], '@ENTITY');
+const actionCreator = (type, target, schema) => {
   return (params) => ({
     type,
     target,
     service: api.bind(this, target),
     payload: params,
-    successSelector: payload => normalizeData(payload.data),
+    successSelector: payload => normalizeData(payload.data, schema),
     failureSelector: (response) => () => {},
   });
+};
+
+const createApi = (target, entityActions, schema) => {
+  const entityApi = {};
+
+  entityActions.forEach(action => {
+    switch (action) {
+      case 'READ':
+        entityApi.getAll = actionCreator(actions.READ, target, schema);
+        entityApi.get = actionCreator(actions.READ, target, schema);
+        break;
+      case 'CREATE':
+        entityApi.create = actionCreator(actions.CREATE, target, schema);
+        break;
+      default:
+    }
+  });
+
+  return entityApi;
+};
+
+export const entities = {};
+const initState = {};
+entityConfig.forEach(({ path, actions: actionList, schema }) => {
+  initState[path] = { schema, ...entityState };
+  entities[path] = { ...createApi(path, actionList, schema)};
+});
+
+const initialState = completeState(initState);
+
+function cleanData(schema, data) {
+  return data;
 }
 
-export const entities = {
-  accounts: {
-    getAll: actionCreator(actions.READ, 'accounts'),
-    get: actionCreator(actions.READ, 'accounts'),
-    create: actionCreator(actions.CREATE, 'accounts'),
-    delete: actionCreator(actions.DELETE, 'accounts'),
-  },
-  locations: {
-    getAll: actionCreator(actions.READ, 'locations'),
-  },
-  users: {
-    getAll: actionCreator(actions.READ, 'users'),
-  },
-  people: {
-    getAll: actionCreator(actions.READ, 'people'),
-  },
+function normalizeData(data = [], schema = {}) {
+  const allIds = [];
+  const byId = data.reduce((acc, item) => {
+    acc[item.id] = cleanData(schema, item);
+    allIds.push(item.id);
+    return acc;
+  }, {});
+
+  return {
+    schema,
+    allIds,
+    byId,
+    sortedIds: { ...allIds }, // todo
+  }
 }
 
 // Reducers (state changers)

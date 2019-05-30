@@ -1,5 +1,4 @@
-
-const api = resource => {
+const api = (resource) => {
   return new Promise((resolve, reject) => {
     fetch(`http://localhost:5001/api/v1/${resource}`)
     .then(response => {

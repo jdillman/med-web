@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(theme => ({
@@ -46,38 +46,28 @@ const Form = () => {
         variant="outlined"
       />
       <TextField
-        id="outlined-name"
-        label="Name"
+        id="outlined-uncontrolled"
+        label="Uncontrolled"
+        defaultValue="foo"
         className={classes.textField}
-        value={values.name}
-        onChange={handleChange('name')}
         margin="normal"
         variant="outlined"
       />
       <TextField
-        id="outlined-name"
-        label="Name"
+        required
+        id="outlined-required"
+        label="Required"
+        defaultValue="Hello World"
         className={classes.textField}
-        value={values.name}
-        onChange={handleChange('name')}
         margin="normal"
         variant="outlined"
       />
       <TextField
-        id="outlined-name"
-        label="Name"
+        error
+        id="outlined-error"
+        label="Error"
+        defaultValue="Hello World"
         className={classes.textField}
-        value={values.name}
-        onChange={handleChange('name')}
-        margin="normal"
-        variant="outlined"
-      />
-      <TextField
-        id="outlined-name"
-        label="Name"
-        className={classes.textField}
-        value={values.name}
-        onChange={handleChange('name')}
         margin="normal"
         variant="outlined"
       />
