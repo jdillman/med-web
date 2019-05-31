@@ -1,25 +1,84 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/styles';
+import Humanize from 'humanize-plus';
+import { Formik, Form as FForm, Field, ErrorMessage } from 'formik'
+
 import TextField from '@material-ui/core/TextField';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { KeyboardDatePicker } from '@material-ui/pickers';
+import { makeStyles } from '@material-ui/styles';
+
+import { ENTITY } from '../../configureEntities';
 
 const useStyles = makeStyles(theme => ({
   container: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    margin: theme.spacing(2),
+  },
+  fieldRow: {
+    width: '100%',
+    margin: theme.spacing(2),
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-  },
-  dense: {
-    marginTop: theme.spacing(2),
-  },
-  menu: {
-    width: 200,
+    minWidth: '250px',
   },
 }));
 
-const Form = () => {
+const FormField = ({ name, type }) => {
+  const classes = useStyles();
+
+  let field = name;
+  switch (type) {
+    case ENTITY.DATE:
+    case ENTITY.DATETIME:
+      field = (
+        <KeyboardDatePicker
+          autoOk
+          variant="inline"
+          inputVariant="outlined"
+          label={Humanize.titleCase(name)}
+          format="MM/dd/yyyy"
+          InputAdornmentProps={{ position: 'start' }}
+        />
+      );
+      break;
+    case ENTITY.STRING:
+      field = (
+        <TextField
+          label={Humanize.titleCase(name)}
+          className={classes.textField}
+          helperText="help text"
+          margin="normal"
+          variant="outlined"
+        />
+      );
+      break;
+    case ENTITY.BOOL:
+      field = (
+        <FormControlLabel
+          checked="false"
+          control={<Switch />}
+          label={Humanize.titleCase(name)}
+          className={classes.textField}
+          helperText="help text"
+          margin="normal"
+          variant="outlined"
+        />
+      );
+      break;
+    default:
+  }
+
+  return (
+    <div className={classes.fieldRow}>
+      { field }
+    </div>
+
+  );
+}
+
+const Form = ({ schema = {} }) => {
   const classes = useStyles();
   const [values, setValues] = React.useState({
     name: ' default name ',
@@ -29,49 +88,44 @@ const Form = () => {
     setValues({ ...values, [name]: event.target.value });
   };
 
+  const handleSubmit = () => {
+    console.log('submitting')
+  };
+
+  console.log(schema);
+ 
+  const fields = Object.keys(schema).map(key => {
+    return <FormField key={key} name={key} type={schema[key]} />;
+  });
+  
+  const data = { email: '', password: '' };
+
   return (
-    <form
-      onChange={handleChange('name')}
+    <Formik
+      initialValues={data}
+      validate={values => {
+        // form submit validation
+
+      }}
+      onSubmit={(values, { setSubmitting }) => {
+        setTimeout(() => {
+          alert(JSON.stringify(values, null, 2));
+          setSubmitting(false);
+        }, 400);
+      }}
       className={classes.container}
       noValidate
       autoComplete="off"
     >
-      <TextField
-        id="outlined-name"
-        label="Name"
-        className={classes.textField}
-        value={values.name}
-        onChange={handleChange('name')}
-        margin="normal"
-        variant="outlined"
-      />
-      <TextField
-        id="outlined-uncontrolled"
-        label="Uncontrolled"
-        defaultValue="foo"
-        className={classes.textField}
-        margin="normal"
-        variant="outlined"
-      />
-      <TextField
-        required
-        id="outlined-required"
-        label="Required"
-        defaultValue="Hello World"
-        className={classes.textField}
-        margin="normal"
-        variant="outlined"
-      />
-      <TextField
-        error
-        id="outlined-error"
-        label="Error"
-        defaultValue="Hello World"
-        className={classes.textField}
-        margin="normal"
-        variant="outlined"
-      />
-    </form>
+      {({ isSubmitting }) => (
+        <FForm>
+          { fields }
+
+        </FForm>
+      )}
+
+      
+    </Formik>
   )
 }
 

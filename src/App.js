@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
+
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 
@@ -28,23 +31,37 @@ const Loading = () => (
   <div>Loading</div>
 );
 
+const themeDefault = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#7986cb',
+      main: '#3f51b5',
+      dark: '#303f9f',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#ff4081',
+      main: '#f50057',
+      dark: '#c51162',
+      contrastText: '#fff',
+    },
+  },
+});
+
 const theme = createMuiTheme({
-  type: 'light',
-  primary: {
-    light: '#7986cb',
-    main: '#3f51b5',
-    dark: '#303f9f',
-    contrastText: '#fff',
-  },
-  secondary: {
-    light: '#ff4081',
-    main: '#f50057',
-    dark: '#c51162',
-    contrastText: '#fff',
-  },
-  background: {
-    paper: '#fff',
-    default: '#fafafa',
+  palette: {
+    primary: {
+      light: '#f182a3',
+      main: '#bc5274',
+      dark: '#892149',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#55b873',
+      main: '#1c8747',
+      dark: '#00591e',
+      contrastText: '#fff',
+    },
   },
 });
 
@@ -57,15 +74,17 @@ class App extends Component {
     const isReady = true;
 
     return (
-      <ThemeProvider theme={theme}>
-        <section className='main-app'>
-          {
-            !isReady
-            ? <Loading />
-            : <Routes />
-          }
-        </section>
-      </ThemeProvider>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <ThemeProvider theme={theme}>
+          <section className='main-app'>
+            {
+              !isReady
+              ? <Loading />
+              : <Routes />
+            }
+          </section>
+        </ThemeProvider>
+      </MuiPickersUtilsProvider>
     );
   }
 }

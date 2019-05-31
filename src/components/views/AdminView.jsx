@@ -5,11 +5,6 @@ import { entities } from '../../lib/entityService';
 
 import View from './View';
 
-// import PatientList from '../../containers/PatientListContainer';
-// import TaskList from '../../containers/TaskListContainer';
-// 
-// import './HomeView.css';
-
 const AdminTable = ({ data }) => {
   return data.map(item => {
     return (

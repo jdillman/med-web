@@ -5,7 +5,7 @@
 
   Example:
   {
-    adapter: 'accounts',
+    path: 'accounts',
     schema: {}
   }
 
@@ -23,17 +23,26 @@
   });
 
 */
+// import { entityFieldTypes } from ''
+
+export const ENTITY = {
+  STRING: '',
+  UUID: 'uuid',
+  BOOL: 'bool',
+  DATE: 'date',
+  DATETIME: 'datetime',
+};
 
 const entityConfigure = [{
   path: 'accounts',
   actions: ['CREATE', 'READ'],
   schema: {
-    id: '',
-    name: '',
-    active: false,
-    activeAt: Date,
-    createdAt: Date,
-    updatedAt: Date,
+    id: ENTITY.UUID,
+    name: ENTITY.STRING,
+    active: ENTITY.BOOL,
+    activeAt: ENTITY.DATETIME,
+    createdAt: ENTITY.DATETIME,
+    updatedAt: ENTITY.DATETIME,
   },
 }];
 
