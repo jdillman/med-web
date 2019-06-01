@@ -24,9 +24,12 @@ const styles = theme => ({
   },
 });
 
+// eslint-disable-next-line
 class ResponsiveDrawer extends React.Component {
   render() {
     const { classes, theme, open, onClose } = this.props;
+
+    console.log(theme);
 
     const drawer = (
       <div>

@@ -6,6 +6,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline'
 
 // import { appStart } from './modules/UIModule';
 import HomeView from './components/views/HomeView';
@@ -31,8 +32,10 @@ const Loading = () => (
   <div>Loading</div>
 );
 
-const themeDefault = createMuiTheme({
+const theme = createMuiTheme({
+
   palette: {
+    type: 'dark',
     primary: {
       light: '#7986cb',
       main: '#3f51b5',
@@ -46,7 +49,7 @@ const themeDefault = createMuiTheme({
       contrastText: '#fff',
     },
   },
-});
+}); /*
 
 const theme = createMuiTheme({
   palette: {
@@ -63,7 +66,7 @@ const theme = createMuiTheme({
       contrastText: '#fff',
     },
   },
-});
+});*/
 
 class App extends Component {
   componentDidMount() {
@@ -76,6 +79,7 @@ class App extends Component {
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <ThemeProvider theme={theme}>
+          <CssBaseline />
           <section className='main-app'>
             {
               !isReady

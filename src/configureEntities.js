@@ -1,11 +1,10 @@
 /* 
-  An Entity is high level data model. By configuring a "schema", "path", and
-  "actions" you can generate an easy to use structure without unncessary
-  boilerplate.
+  An Entity is high level data model. By configuring an adapter and schema
+  you can generate an easy to use structure without unncessary boilerplate.
 
   Example:
   {
-    path: 'accounts',
+    adapter: 'accounts',
     schema: {}
   }
 
@@ -34,8 +33,12 @@ export const ENTITY = {
 };
 
 const entityConfigure = [{
-  path: 'accounts',
-  actions: ['CREATE', 'READ'],
+  adapter: {
+    path: 'accounts',
+    // advanced usercases
+    normalizer: () => { console.log('<--- coming in')},
+    serializer: () => { console.log('going out --->')},
+  },
   schema: {
     id: ENTITY.UUID,
     name: ENTITY.STRING,
@@ -45,5 +48,32 @@ const entityConfigure = [{
     updatedAt: ENTITY.DATETIME,
   },
 }];
+
+
+  // const { object, string, number, date } = require('yup')
+  // 
+  // const contactSchema = object({
+  //   name: string()
+  //     .required(),
+  //   age: number()
+  //     .required()
+  //     .positive()
+  //     .integer(),
+  //   email: string()
+  //     .email(),
+  //   website: string()
+  //     .url(),
+  //   createdOn: date()
+  //     .default(() => new Date())
+  // })
+  // 
+  // contactSchema.cast({
+  //   name: 'jimmy',
+  //   age: '24',
+  //   createdOn: '2014-09-23T19:25:25Z'
+  // })
+  // 
+
+
 
 export default entityConfigure;

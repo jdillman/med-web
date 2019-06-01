@@ -14,7 +14,16 @@ const entityState = {
   sortedIds: [],
 };
 
-const actions = createTypes(['CREATE', 'READ', 'UPDATE', 'DELETE'], '@ENTITY');
+// todo configurable with adapters
+const RESTactions = createTypes(['CREATE', 'READ', 'UPDATE', 'DELETE'], '@ENTITY');
+
+// this is completed to auto include _success _failure events/state. Actions
+// you don't want to have this behavior add to override
+const reducerDescription = {
+  primaryActions: [RESTactions.CREATE, RESTactions.READ, RESTactions.UPDATE, RESTactions.DELETE],
+  override: {},
+};
+
 const actionCreator = (type, target, schema) => {
   return (params) => ({
     type,
@@ -22,42 +31,37 @@ const actionCreator = (type, target, schema) => {
     service: api.bind(this, target),
     payload: params,
     successSelector: payload => normalizeData(payload.data, schema),
-    failureSelector: (response) => () => {},
+    failureSelector: response => () => {
+      console.log('failure', response);
+    },
   });
 };
 
-const createApi = (target, entityActions, schema) => {
-  const entityApi = {};
+// todo Not happy with this, move abstraction to an adapter
+const createApi = (adapter, schema) => {
+  const { path, type = 'REST' } = adapter;
 
-  entityActions.forEach(action => {
-    switch (action) {
-      case 'READ':
-        entityApi.getAll = actionCreator(actions.READ, target, schema);
-        entityApi.get = actionCreator(actions.READ, target, schema);
-        break;
-      case 'CREATE':
-        entityApi.create = actionCreator(actions.CREATE, target, schema);
-        break;
-      default:
-    }
-  });
+  switch (type) {
+    case 'REST':
+      return {
+        getAll: actionCreator(RESTactions.READ, path, schema),
+        get: actionCreator(RESTactions.READ, path, schema),
+        create: actionCreator(RESTactions.CREATE, path, schema),
+        remove: actionCreator(RESTactions.DELETE, path, schema),
+        update: actionCreator(RESTactions.UPDATE, path, schema),
+      };
+    default:
+  }
 
-  return entityApi;
+  return {};
 };
 
-export const entities = {};
-const initState = {};
-entityConfig.forEach(({ path, actions: actionList, schema }) => {
-  initState[path] = { schema, ...entityState };
-  entities[path] = { ...createApi(path, actionList, schema)};
-});
-
-const initialState = completeState(initState);
-
+// Injectable item formatter
 function cleanData(schema, data) {
   return data;
 }
 
+// Injectable normalizer
 function normalizeData(data = [], schema = {}) {
   const allIds = [];
   const byId = data.reduce((acc, item) => {
@@ -74,10 +78,14 @@ function normalizeData(data = [], schema = {}) {
   }
 }
 
-// Reducers (state changers)
-const reducerDescription = {
-  primaryActions: [actions.CREATE, actions.READ, actions.UPDATE, actions.DELETE],
-  override: {},
-};
+const entities = {};
+const initState = {};
+entityConfig.forEach(({ adapter, schema }) => {
+  initState[adapter.path] = { schema, ...entityState };
+  entities[adapter.path] = { ...createApi(adapter, schema)};
+});
 
+const initialState = completeState(initState);
+
+export { entities };
 export default createReducer(initialState, completeReducer(reducerDescription));

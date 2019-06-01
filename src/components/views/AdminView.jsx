@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { entities } from '../../lib/entityService';
 
-import View from './View';
+import Dashboard from '../layouts/Dashboard';
 
 const AdminTable = ({ data }) => {
   return data.map(item => {
@@ -23,18 +23,18 @@ class AdminView extends Component {
   }
 
   render() {
-    const { accounts, locations } = this.props;
+    const { accounts } = this.props;
 
     return (
-      <View type="simple">
+      <Dashboard>
         <p>Admin - Go build something jonathan</p>
         <AdminTable data={accounts} />
-      </View>
+      </Dashboard>
     );
   }
 }
 
-const mapState = ({ entities: { accounts, locations } }) => ({
+const mapState = ({ entities: { accounts } }) => ({
   accounts: accounts.allIds.map(id => accounts.byId[id]),
 });
 

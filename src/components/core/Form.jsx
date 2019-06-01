@@ -1,6 +1,6 @@
 import React from 'react';
 import Humanize from 'humanize-plus';
-import { Formik, Form as FForm, Field, ErrorMessage } from 'formik'
+import { Formik, Form as FForm } from 'formik'
 
 import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    minWidth: '250px',
   },
 }));
 
@@ -51,6 +50,7 @@ const FormField = ({ name, type }) => {
           helperText="help text"
           margin="normal"
           variant="outlined"
+          fullWidth
         />
       );
       break;
@@ -114,13 +114,13 @@ const Form = ({ schema = {} }) => {
         }, 400);
       }}
       className={classes.container}
-      noValidate
-      autoComplete="off"
     >
       {({ isSubmitting }) => (
-        <FForm>
+        <FForm
+          noValidate
+          autoComplete="off"
+        >
           { fields }
-
         </FForm>
       )}
 
