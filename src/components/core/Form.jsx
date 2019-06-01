@@ -1,6 +1,6 @@
 import React from 'react';
 import Humanize from 'humanize-plus';
-import { Formik, Form as FForm } from 'formik'
+import { Formik, Form as FForm } from 'formik';
 
 import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
