@@ -42,7 +42,7 @@ class ResponsiveDrawer extends React.Component {
     );
 
     return (
-      <div className={classes.root}>
+      <nav className={classes.root}>
         { /* <Hidden mdUp> */}
         <Drawer
           variant="temporary"
@@ -70,7 +70,7 @@ class ResponsiveDrawer extends React.Component {
             {drawer}
           </Drawer> */}
         </Hidden>
-      </div>
+      </nav>
     );
   }
 }

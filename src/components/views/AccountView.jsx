@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import { entities } from '../../lib/entityService';
-import Dashboard from '../layouts/Dashboard';
+import View from '../layouts/View';
 
 import Form from '../core/Form';
 
@@ -28,11 +28,11 @@ class AccountView extends Component {
     const { schema, account } = this.props;
 
     return (
-      <Dashboard>
+      <View>
         <Paper>
           <Form schema={schema} data={account} />
         </Paper>
-      </Dashboard>
+      </View>
     );
   }
 }

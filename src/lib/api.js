@@ -1,6 +1,8 @@
-const api = (resource) => {
+const { REACT_APP_API, REACT_APP_BASEURL } = process.env;
+
+export default (resource) => {
   return new Promise((resolve, reject) => {
-    fetch(`http://localhost:5001/api/v1/${resource}`)
+    fetch(`${REACT_APP_API}${REACT_APP_BASEURL}${resource}`)
     .then(response => {
       if (!response.ok) return resolve(response)
       return response.json();
@@ -9,5 +11,3 @@ const api = (resource) => {
     .catch(err => reject(err))
   });
 }
-
-export default api;

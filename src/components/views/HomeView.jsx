@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { entities } from '../../lib/entityService';
 
-import Dashboard from '../layouts/Dashboard';
+import View from '../layouts/View';
 
 // import PatientList from '../../containers/PatientListContainer';
 // import TaskList from '../../containers/TaskListContainer';
@@ -21,10 +21,10 @@ class HomeView extends Component {
     const admin = true;
 
     return (
-      <Dashboard type="simple-nav">
+      <View>
         <p>Home</p>
         { admin && <Link to="/admin">Admin</Link> }
-      </Dashboard>
+      </View>
     );
   }
 }

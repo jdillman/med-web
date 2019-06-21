@@ -14,7 +14,7 @@ import DemoView from './components/views/DemoView';
 
 // todo dynamic import
 import AccountView from './components/views/AccountView';
-import AdminView from './components/views/AdminView';
+import AdminView from './components/views/AdminViewContainer';
 
 import './styles/normalize.css';
 
@@ -33,9 +33,8 @@ const Loading = () => (
 );
 
 const theme = createMuiTheme({
-
   palette: {
-    type: 'dark',
+    type: 'light',
     primary: {
       light: '#7986cb',
       main: '#3f51b5',
