@@ -1,32 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
+import DateFnsUtils from '@date-io/date-fns';
 
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline'
 
-// import { appStart } from './modules/UIModule';
-import HomeView from './components/views/HomeView';
-import DemoView from './components/views/DemoView';
-
-// todo dynamic import
-import AccountView from './components/views/AccountView';
-import AdminView from './components/views/AdminViewContainer';
+import Routes from './components/Routes';
 
 import './styles/normalize.css';
-
-const Routes = () => (
-  <React.Fragment>
-    <Route exact path='/' component={HomeView} />
-    <Route exact path='/demo' component={DemoView} />
-
-    <Route exact path='/admin/account/:id' component={AccountView} />
-    <Route exact path='/admin' component={AdminView} />
-  </React.Fragment>
-);
 
 const Loading = () => (
   <div>Loading</div>

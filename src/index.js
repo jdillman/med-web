@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 import configureStore from './configureStore';
 import * as serviceWorker from './serviceWorker';
 
@@ -11,9 +10,7 @@ const store = configureStore();
 
 const ConnectedApp = () => (
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <App />
   </Provider>
 );
 

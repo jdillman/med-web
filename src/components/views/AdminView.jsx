@@ -8,7 +8,15 @@ import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 
-import List from '../core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import FolderIcon from '@material-ui/icons/Folder';
+import EditIcon from '@material-ui/icons/Edit';
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+
 import View from '../layouts/View';
 import { entities } from '../../lib/entityService';
 
@@ -38,9 +46,19 @@ const AccountList = () => {
 
   return data.map(item => {
     return (
-      <p key={item.id}>
-        <Link to={`/admin/account/${item.id}`}>{item.name}</Link>
-      </p>
+      <ListItem button component={<Link to={`/admin/account/${item.id}`} />}>
+        <ListItemAvatar>
+          <Avatar>
+            <FolderIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={item.name} secondary={"secondary text"} />
+        <ListItemSecondaryAction>
+          <IconButton edge="end" aria-label="Edit">
+            <EditIcon />
+          </IconButton>
+        </ListItemSecondaryAction>
+      </ListItem>
     );
   })
 };
@@ -53,20 +71,16 @@ const AdminView = ({ accounts = [], children }) => {
     <View title="Admin">
       <Container>
         <Grid container spacing={2}>
-          {/* TOP */}
           <Grid item xs={12} md={8} lg={9}>
             <Paper className={fixedHeightPaper}>
               <p>Admin - Go build something jonathan</p>
-              <List items={accounts} />
             </Paper>
           </Grid>
-          {/* MID */}
           <Grid item xs={12} md={4} lg={3}>
             <Paper className={fixedHeightPaper}>
               <AccountList />
             </Paper>
           </Grid>
-          {/* BOTTOm */}
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               { children }

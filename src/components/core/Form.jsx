@@ -8,8 +8,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/styles';
 
-import { ENTITY } from '../../configureEntities';
-
 const useStyles = makeStyles(theme => ({
   container: {
     margin: theme.spacing(2),
@@ -88,7 +86,7 @@ const Form = ({ schema = {} }) => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (values, actions) => {
     console.log('submitting')
   };
 
@@ -103,16 +101,8 @@ const Form = ({ schema = {} }) => {
   return (
     <Formik
       initialValues={data}
-      validate={values => {
-        // form submit validation
-
-      }}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
-      }}
+      validationSchema={schema}
+      onSubmit={handleSubmit}
       className={classes.container}
     >
       {({ isSubmitting }) => (

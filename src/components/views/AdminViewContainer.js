@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { entities } from '../../lib/entityService';
 import AdminView from './AdminView';
 
-// todo learn hooks better
+// todo convert to hooks?
 class AdminViewGetter extends React.Component {
   componentDidMount() {
     const { getAccounts } = this.props;

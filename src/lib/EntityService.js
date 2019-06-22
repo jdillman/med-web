@@ -15,22 +15,22 @@ const entityState = {
 };
 
 // todo configurable with adapters
-const RESTactions = createTypes(['CREATE', 'READ', 'UPDATE', 'DELETE'], '@ENTITY');
+const CRUDactions = createTypes(['CREATE', 'READ', 'UPDATE', 'DELETE'], '@ENTITY');
 
 // this is completed to auto include _success _failure events/state. Actions
 // you don't want to have this behavior add to override
 const reducerDescription = {
-  primaryActions: [RESTactions.CREATE, RESTactions.READ, RESTactions.UPDATE, RESTactions.DELETE],
+  primaryActions: [CRUDactions.CREATE, CRUDactions.READ, CRUDactions.UPDATE, CRUDactions.DELETE],
   override: {},
 };
 
-const actionCreator = (type, target, schema) => {
+const actionCreator = (type, target, entity) => {
   return (params) => ({
     type,
     target,
     service: api.bind(this, target),
     payload: params,
-    successSelector: payload => normalizeData(payload.data, schema),
+    successSelector: payload => normalizeData(payload.data, entity),
     failureSelector: response => () => {
       console.log('failure', response);
     },
@@ -38,22 +38,14 @@ const actionCreator = (type, target, schema) => {
 };
 
 // todo Not happy with this, move abstraction to an adapter
-const createApi = (adapter, schema) => {
-  const { path, type = 'REST' } = adapter;
-
-  switch (type) {
-    case 'REST':
-      return {
-        getAll: actionCreator(RESTactions.READ, path, schema),
-        get: actionCreator(RESTactions.READ, path, schema),
-        create: actionCreator(RESTactions.CREATE, path, schema),
-        remove: actionCreator(RESTactions.DELETE, path, schema),
-        update: actionCreator(RESTactions.UPDATE, path, schema),
-      };
-    default:
-  }
-
-  return {};
+const createApi = (target, entity) => {
+  return {
+    getAll: actionCreator(CRUDactions.READ, target, entity),
+    get: actionCreator(CRUDactions.READ, target, entity),
+    create: actionCreator(CRUDactions.CREATE, target, entity),
+    remove: actionCreator(CRUDactions.DELETE, target, entity),
+    update: actionCreator(CRUDactions.UPDATE, target, entity),
+  };
 };
 
 // Injectable item formatter
@@ -61,17 +53,15 @@ function cleanData(schema, data) {
   return data;
 }
 
-// Injectable normalizer
-function normalizeData(data = [], schema = {}) {
+function normalizeData(data = [], entity) {
   const allIds = [];
   const byId = data.reduce((acc, item) => {
-    acc[item.id] = cleanData(schema, item);
+    acc[item.id] = cleanData(entity.schema, item);
     allIds.push(item.id);
     return acc;
   }, {});
 
   return {
-    schema,
     allIds,
     byId,
     sortedIds: { ...allIds }, // todo
@@ -80,9 +70,11 @@ function normalizeData(data = [], schema = {}) {
 
 const entities = {};
 const initState = {};
-entityConfig.forEach(({ adapter, schema }) => {
-  initState[adapter.path] = { schema, ...entityState };
-  entities[adapter.path] = { ...createApi(adapter, schema)};
+
+Object.entries(entityConfig).forEach(([ target, entity ]) => {
+  const { schema } = entity;
+  initState[target] = { schema, ...entityState };
+  entities[target] = { ...createApi(target, entity)};
 });
 
 const initialState = completeState(initState);
