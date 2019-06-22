@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import FolderIcon from '@material-ui/icons/Folder';
@@ -18,7 +19,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import View from '../layouts/View';
-import { entities } from '../../lib/entityService';
+// import { entities } from '../../lib/entityService';
 
 /* eslint-disable-next-line */
 const useStyles = makeStyles(theme => ({
@@ -34,25 +35,25 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
   },
   fixedHeight: {
-    height: 240,
+    height: 288,
   },
 }));
 
 const AccountList = () => {
   const data = useSelector(({ entities: { accounts }}) => accounts.allIds.map(id => accounts.byId[id]));
   
-  const dispatch = useDispatch();
-  dispatch(entities.accounts.get);
+  // const dispatch = useDispatch();
+  // dispatch(entities.accounts.get);
 
-  return data.map(item => {
+  const listItems = data.map(item => {
     return (
-      <ListItem button component={<Link to={`/admin/account/${item.id}`} />}>
+      <ListItem key={item.id} button component={Link} to={`/admin/account/${item.id}`}>
         <ListItemAvatar>
           <Avatar>
             <FolderIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary={item.name} secondary={"secondary text"} />
+        <ListItemText primary={item.name} />
         <ListItemSecondaryAction>
           <IconButton edge="end" aria-label="Edit">
             <EditIcon />
@@ -60,7 +61,11 @@ const AccountList = () => {
         </ListItemSecondaryAction>
       </ListItem>
     );
-  })
+  });
+
+  return (
+    <List>{listItems}</List>
+  );
 };
 
 const AdminView = ({ accounts = [], children }) => {
@@ -78,7 +83,7 @@ const AdminView = ({ accounts = [], children }) => {
           </Grid>
           <Grid item xs={12} md={4} lg={3}>
             <Paper className={fixedHeightPaper}>
-              <AccountList />
+              <AccountList accounts={accounts} />
             </Paper>
           </Grid>
           <Grid item xs={12}>

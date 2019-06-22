@@ -27,8 +27,7 @@ const FormField = ({ name, type }) => {
 
   let field = name;
   switch (type) {
-    case ENTITY.DATE:
-    case ENTITY.DATETIME:
+    case 'date':
       field = (
         <KeyboardDatePicker
           autoOk
@@ -40,7 +39,7 @@ const FormField = ({ name, type }) => {
         />
       );
       break;
-    case ENTITY.STRING:
+    case 'string':
       field = (
         <TextField
           label={Humanize.titleCase(name)}
@@ -52,7 +51,7 @@ const FormField = ({ name, type }) => {
         />
       );
       break;
-    case ENTITY.BOOL:
+    case 'boolean':
       field = (
         <FormControlLabel
           checked="false"
@@ -105,7 +104,7 @@ const Form = ({ schema = {} }) => {
       onSubmit={handleSubmit}
       className={classes.container}
     >
-      {({ isSubmitting }) => (
+      {() => (
         <FForm
           noValidate
           autoComplete="off"

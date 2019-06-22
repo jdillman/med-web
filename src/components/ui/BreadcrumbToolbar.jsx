@@ -27,7 +27,7 @@ export default function View({ title, parent }) {
   const classes = useStyles();
   const routes = useRouter();
   // todo split path into breadcrumbs
-  console.log(routes.location.pathname);
+  // console.log(routes.location.pathname);
 
   return (
     <AppBar position="static" color="default">
@@ -37,7 +37,6 @@ export default function View({ title, parent }) {
             <HomeIcon className={classes.icon} />
             Home
           </Link>
-          linkBuilder()
           <Link color="inherit" href="/" className={classes.link}>
             <LabelIcon className={classes.icon} />
             { parent }
