@@ -173,7 +173,7 @@ class PrimarySearchAppBar extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography className={classes.title} variant="h3" color="inherit" noWrap>
+            <Typography className={classes.title} variant="h4" color="inherit" noWrap>
               {process.env.REACT_APP_TITLE}
             </Typography>
             {/*

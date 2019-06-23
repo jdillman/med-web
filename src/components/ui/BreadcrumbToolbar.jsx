@@ -1,6 +1,8 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/styles';
+import Humanize from 'humanize-plus';
+import { Link as RouterLink } from 'react-router-dom';
 
+import { makeStyles } from '@material-ui/styles';
 import Link from '@material-ui/core/Link';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -23,31 +25,57 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function View({ title, parent }) {
+function buildCrumbs(pathname, title) {
+  const paths = pathname.split('/').filter(Boolean);
+  const pathLen = paths.length;
+  const homeUrl = '/';
+
+  let crumbPath = homeUrl;
+  const crumbs = paths.map((path, i) => {
+    crumbPath += path;
+    const isLast = pathLen === i + 1;
+    const crumb = {
+      text: (isLast && title) || Humanize.titleCase(path),
+      url: `${crumbPath}`,
+      CrumbIcon: LabelIcon,
+    };
+
+    crumbPath += '/';
+
+    return crumb;
+  });
+
+  crumbs.unshift({
+    text: 'Home',
+    url: homeUrl,
+    CrumbIcon: HomeIcon,
+  });
+
+  return crumbs;
+}
+
+export default function BreadcrumbToolbar({ title }) {
   const classes = useStyles();
-  const routes = useRouter();
-  // todo split path into breadcrumbs
-  // console.log(routes.location.pathname);
+
+  const {
+    location: { pathname = '' },
+  } = useRouter();
+  const crumbs = buildCrumbs(pathname, title);
+
+  function renderBreadcrumbs() {
+    return crumbs.map(({ text, url, CrumbIcon }) => (
+      <Link key={text} color="inherit" component={RouterLink} to={url} className={classes.link}>
+        <CrumbIcon className={classes.icon} />
+        <Typography>{text}</Typography>
+      </Link>
+    ));
+  }
 
   return (
     <AppBar position="static" color="default">
       <Toolbar>
-        <Breadcrumbs aria-label="Breadcrumb">
-          <Link color="inherit" href="/" className={classes.link}>
-            <HomeIcon className={classes.icon} />
-            Home
-          </Link>
-          <Link color="inherit" href="/" className={classes.link}>
-            <LabelIcon className={classes.icon} />
-            { parent }
-          </Link>
-          <Typography className={classes.link} color="textPrimary">
-            <LabelIcon className={classes.icon} />
-            {title}
-          </Typography>
-        </Breadcrumbs>
+        <Breadcrumbs aria-label="Breadcrumb">{renderBreadcrumbs()}</Breadcrumbs>
       </Toolbar>
     </AppBar>
   );
 }
-

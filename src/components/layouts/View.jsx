@@ -4,8 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
-import Header from '../core/Header';
-import NavDrawer from '../core/NavDrawer';
+import PageHeader from '../ui/PageHeader';
+import NavDrawer from '../ui/NavDrawer';
 import BreadcrumbToolbar from '../ui/BreadcrumbToolbar'
 
 const useStyles = makeStyles(() => ({
@@ -27,7 +27,7 @@ export default function View({ title, children }) {
       <NavDrawer onClose={toggleDrawer} open={navOpen} />
       <Grid className={classes.root} container direction="column" component="main">
         <Grid item ys={1}>
-          <Header toggleDrawer={toggleDrawer} />
+          <PageHeader toggleDrawer={toggleDrawer} />
         </Grid>
         <Grid item ys={11}>
           <Grid container direction="column">

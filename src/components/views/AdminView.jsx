@@ -19,9 +19,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import View from '../layouts/View';
-// import { entities } from '../../lib/entityService';
 
-/* eslint-disable-next-line */
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -29,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto',
   },
   paper: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
     display: 'flex',
     overflow: 'auto',
     flexDirection: 'column',
@@ -75,14 +73,14 @@ const AdminView = ({ accounts = [], children }) => {
   return (
     <View title="Admin">
       <Container>
-        <Grid container spacing={2}>
+        <Grid container spacing={4}>
           <Grid item xs={12} md={8} lg={9}>
             <Paper className={fixedHeightPaper}>
               <p>Admin - Go build something jonathan</p>
             </Paper>
           </Grid>
           <Grid item xs={12} md={4} lg={3}>
-            <Paper className={fixedHeightPaper}>
+            <Paper>
               <AccountList accounts={accounts} />
             </Paper>
           </Grid>
