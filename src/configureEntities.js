@@ -24,11 +24,13 @@
 */
 
 import accounts from './entities/account';
+import locations from './entities/location';
+import people from './entities/person';
 
 const entities = {
   accounts,
+  locations,
+  people,
 };
-
-console.log(entities);
 
 export default entities;

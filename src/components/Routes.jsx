@@ -5,6 +5,8 @@ import HomeView from './views/HomeView';
 import DemoView from './views/DemoView';
 
 // todo dynamic import
+import LocationView from './views/LocationView';
+import PersonView from './views/PersonView';
 import AdminView from './views/AdminViewContainer';
 import AccountView from './views/AccountView';
 
@@ -19,8 +21,11 @@ export default function HookedBrowserRouter() {
             <Route exact path='/' component={HomeView} />
             <Route exact path='/demo' component={DemoView} />
 
-            <Route exact path='/admin/account/:id' component={AccountView} />
             <Route exact path='/admin' component={AdminView} />
+            <Route path='/admin/accounts/:id?' component={AccountView} />
+
+            <Route path='/locations/:id?' component={LocationView} />
+            <Route path='/person/:id?' component={PersonView} />
           </RouterContext.Provider>
         )}
       </Route>

@@ -76,6 +76,7 @@ const FormField = ({ name, type }) => {
 }
 
 const Form = ({ schema = {} }) => {
+  const { fields } = schema;
   const classes = useStyles();
   const [values, setValues] = React.useState({
     name: ' default name ',
@@ -90,9 +91,10 @@ const Form = ({ schema = {} }) => {
   };
 
   console.log(schema);
- 
-  const fields = Object.keys(schema).map(key => {
-    return <FormField key={key} name={key} type={schema[key]} />;
+
+  const formFields = Object.keys(fields).map(field => {
+    console.log(field);
+    return <FormField key={field} name={field} type={fields[field]} />;
   });
   
   const data = { email: '', password: '' };
@@ -109,7 +111,7 @@ const Form = ({ schema = {} }) => {
           noValidate
           autoComplete="off"
         >
-          { fields }
+          { formFields }
         </FForm>
       )}
 

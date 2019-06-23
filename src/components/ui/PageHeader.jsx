@@ -20,6 +20,10 @@ const styles = theme => ({
   root: {
     width: '100%',
   },
+  toolbar: {
+    paddingLeft: theme.spacing(1.5),
+    paddingRight: theme.spacing(1.5),
+  },
   grow: {
     flexGrow: 1,
   },
@@ -165,7 +169,7 @@ class PrimarySearchAppBar extends React.Component {
     return (
       <div className={classes.root}>
         <AppBar position="static">
-          <Toolbar>
+          <Toolbar className={classes.toolbar} disableGutters variant="dense">
             <IconButton
               onClick={toggleDrawer}
               color="inherit"

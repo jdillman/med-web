@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import { entities } from '../../lib/entityService';
+import { schema } from '../../entities/account';
 import View from '../layouts/View';
 
 import Form from '../core/Form';
@@ -20,9 +21,8 @@ class AccountView extends Component {
   }
 
   render() {
-    const { schema, account } = this.props;
-
-    const name = 'Custom BC name';
+    const { account = {} } = this.props;
+    const { name } = account;
 
     return (
       <View title={name}>
@@ -42,7 +42,6 @@ const mapState = (
     },
   }
 ) => ({
-  schema: accounts.schema,
   account: accounts.byId[id],
 });
 

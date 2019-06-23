@@ -73,7 +73,7 @@ export default function BreadcrumbToolbar({ title }) {
 
   return (
     <AppBar position="static" color="default">
-      <Toolbar>
+      <Toolbar variant="dense">
         <Breadcrumbs aria-label="Breadcrumb">{renderBreadcrumbs()}</Breadcrumbs>
       </Toolbar>
     </AppBar>

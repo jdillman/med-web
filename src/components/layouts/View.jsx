@@ -17,7 +17,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function View({ title, children }) {
-
   const [navOpen, setNavOpen] = useState(false);
   const toggleDrawer = () => setNavOpen(!navOpen);
   const classes = useStyles();
@@ -25,7 +24,7 @@ export default function View({ title, children }) {
   return (
     <React.Fragment>
       <NavDrawer onClose={toggleDrawer} open={navOpen} />
-      <Grid className={classes.root} container direction="column" component="main">
+      <Grid className={classes.root} container direction="column">
         <Grid item ys={1}>
           <PageHeader toggleDrawer={toggleDrawer} />
         </Grid>
@@ -35,7 +34,7 @@ export default function View({ title, children }) {
               <BreadcrumbToolbar title={title} />
             </Grid>
             <Grid item ys={11}>
-              <Paper>
+              <Paper component="main">
                 {children}
               </Paper>
             </Grid>

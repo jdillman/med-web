@@ -45,7 +45,7 @@ const AccountList = () => {
 
   const listItems = data.map(item => {
     return (
-      <ListItem key={item.id} button component={Link} to={`/admin/account/${item.id}`}>
+      <ListItem key={item.id} button component={Link} to={`/admin/accounts/${item.id}`}>
         <ListItemAvatar>
           <Avatar>
             <FolderIcon />
@@ -73,7 +73,7 @@ const AdminView = ({ accounts = [], children }) => {
   return (
     <View title="Admin">
       <Container>
-        <Grid container spacing={4}>
+        <Grid container spacing={2}>
           <Grid item xs={12} md={8} lg={9}>
             <Paper className={fixedHeightPaper}>
               <p>Admin - Go build something jonathan</p>

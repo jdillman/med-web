@@ -5,6 +5,7 @@ import {
   completeReducer,
 } from 'redux-recompose';
 
+// TODO configurable
 import api from './api';
 import entityConfig from '../configureEntities';
 
@@ -14,11 +15,12 @@ const entityState = {
   sortedIds: [],
 };
 
-// todo configurable with adapters
+// TODO configurable
 const CRUDactions = createTypes(['CREATE', 'READ', 'UPDATE', 'DELETE'], '@ENTITY');
 
 // this is completed to auto include _success _failure events/state. Actions
 // you don't want to have this behavior add to override
+// TODO configurable
 const reducerDescription = {
   primaryActions: [CRUDactions.CREATE, CRUDactions.READ, CRUDactions.UPDATE, CRUDactions.DELETE],
   override: {},
@@ -48,15 +50,34 @@ const createApi = (target, entity) => {
   };
 };
 
-// Injectable item formatter
-function cleanData(schema, data) {
-  return data;
+// TODO configurable
+function cleanData(data, entity) {
+  return entity.schema.cast(data);
 }
 
+// TODO configurable
 function normalizeData(data = [], entity) {
   const allIds = [];
+  const sortedIds = [];
+
+  // todo better
+  data.sort((a, b) => {
+    const nameA = a.name.toUpperCase();
+    const nameB = b.name.toUpperCase();
+
+    if (nameA < nameB) {
+      return -1;
+    }
+
+    if (nameA > nameB) {
+      return 1;
+    }
+
+    return 0;
+  });
+
   const byId = data.reduce((acc, item) => {
-    acc[item.id] = cleanData(entity.schema, item);
+    acc[item.id] = cleanData(item, entity);
     allIds.push(item.id);
     return acc;
   }, {});
@@ -64,7 +85,7 @@ function normalizeData(data = [], entity) {
   return {
     allIds,
     byId,
-    sortedIds: { ...allIds }, // todo
+    sortedIds,
   }
 }
 
