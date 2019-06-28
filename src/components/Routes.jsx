@@ -3,8 +3,6 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 import HomeView from './views/HomeView';
 import DemoView from './views/DemoView';
-
-// todo dynamic import
 import LocationView from './views/LocationView';
 import PersonView from './views/PersonView';
 import AdminView from './views/AdminViewContainer';

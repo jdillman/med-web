@@ -33,10 +33,12 @@ export default function LocationView() {
     location: { pathname = '' },
   } = useRouter();
 
+  console.log(pathname);
+
   return (
     <View>
       <Paper classes={classes.root}>
-        <Form schema={schema} data={account} />
+        <Form />
       </Paper>
     </View>
   );

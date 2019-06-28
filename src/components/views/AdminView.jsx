@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 
 import List from '@material-ui/core/List';
@@ -72,25 +71,23 @@ const AdminView = ({ accounts = [], children }) => {
 
   return (
     <View title="Admin">
-      <Container>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={8} lg={9}>
-            <Paper className={fixedHeightPaper}>
-              <p>Admin - Go build something jonathan</p>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={4} lg={3}>
-            <Paper>
-              <AccountList accounts={accounts} />
-            </Paper>
-          </Grid>
-          <Grid item xs={12}>
-            <Paper className={classes.paper}>
-              { children }
-            </Paper>
-          </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={8} lg={9}>
+          <Paper className={fixedHeightPaper}>
+            <p>Admin - Go build something jonathan</p>
+          </Paper>
         </Grid>
-      </Container>
+        <Grid item xs={12} md={4} lg={3}>
+          <Paper>
+            <AccountList accounts={accounts} />
+          </Paper>
+        </Grid>
+        <Grid item xs={12}>
+          <Paper className={classes.paper}>
+            { children }
+          </Paper>
+        </Grid>
+      </Grid>
     </View>
   );    
 };

@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Container from '@material-ui/core/Container';
 
 import PageHeader from '../ui/PageHeader';
 import NavDrawer from '../ui/NavDrawer';
@@ -35,7 +36,9 @@ export default function View({ title, children }) {
             </Grid>
             <Grid item ys={11}>
               <Paper component="main">
-                {children}
+                <Container>
+                  {children}
+                </Container>
               </Paper>
             </Grid>
           </Grid>

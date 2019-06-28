@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import { entities } from '../../lib/entityService';
 import { schema } from '../../entities/account';
 import View from '../layouts/View';
@@ -26,9 +26,9 @@ class AccountView extends Component {
 
     return (
       <View title={name}>
-        <Paper>
+        <Grid container spacing={2}>
           <Form schema={schema} data={account} />
-        </Paper>
+        </Grid>
       </View>
     );
   }

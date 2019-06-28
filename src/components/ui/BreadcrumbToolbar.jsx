@@ -8,7 +8,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-
+import Container from '@material-ui/core/Container';
 import HomeIcon from '@material-ui/icons/Home';
 import LabelIcon from '@material-ui/icons/Label';
 
@@ -73,7 +73,7 @@ export default function BreadcrumbToolbar({ title }) {
 
   return (
     <AppBar position="static" color="default">
-      <Toolbar variant="dense">
+      <Toolbar component={Container} variant="dense">
         <Breadcrumbs aria-label="Breadcrumb">{renderBreadcrumbs()}</Breadcrumbs>
       </Toolbar>
     </AppBar>

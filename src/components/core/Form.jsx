@@ -11,9 +11,9 @@ import { makeStyles } from '@material-ui/styles';
 const useStyles = makeStyles(theme => ({
   container: {
     margin: theme.spacing(2),
+    width: '100%',
   },
   fieldRow: {
-    width: '100%',
     margin: theme.spacing(2),
   },
   textField: {
@@ -22,102 +22,105 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const FormField = ({ name, type }) => {
+const FormField = ({ name, type, errors, touched, ...restProps }) => {
   const classes = useStyles();
 
-  let field = name;
+  let field;
   switch (type) {
     case 'date':
       field = (
         <KeyboardDatePicker
+          name={name}
           autoOk
           variant="inline"
           inputVariant="outlined"
           label={Humanize.titleCase(name)}
           format="MM/dd/yyyy"
           InputAdornmentProps={{ position: 'start' }}
+          {...restProps}
         />
       );
       break;
     case 'string':
       field = (
         <TextField
+          name={name}
           label={Humanize.titleCase(name)}
           className={classes.textField}
-          helperText="help text"
+          helperText={errors && touched && errors}
           margin="normal"
           variant="outlined"
           fullWidth
+          {...restProps}
         />
       );
       break;
     case 'boolean':
       field = (
         <FormControlLabel
-          checked="false"
+          name={name}
+          checked={restProps.value}
           control={<Switch />}
           label={Humanize.titleCase(name)}
           className={classes.textField}
-          helperText="help text"
           margin="normal"
           variant="outlined"
+          {...restProps}
         />
       );
       break;
     default:
   }
 
-  return (
-    <div className={classes.fieldRow}>
-      { field }
-    </div>
+  return <div className={classes.fieldRow}>{field}</div>;
+};
 
-  );
-}
-
-const Form = ({ schema = {} }) => {
+const Form = ({ schema = {}, data = {} }) => {
   const { fields } = schema;
   const classes = useStyles();
-  const [values, setValues] = React.useState({
-    name: ' default name ',
-  });
-
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
-  };
 
   const handleSubmit = (values, actions) => {
-    console.log('submitting')
+    console.log('submitting');
+    console.log(values);
+    console.log(actions);
   };
 
-  console.log(schema);
-
-  const formFields = Object.keys(fields).map(field => {
-    console.log(field);
-    return <FormField key={field} name={field} type={fields[field]} />;
-  });
-  
-  const data = { email: '', password: '' };
+  // Build defaults from schema
+  const initValue = Object.keys(fields).reduce((acc, field) => {
+    acc[field] = data[field] || fields[field].default();
+    return acc;
+  }, {});
 
   return (
     <Formik
-      initialValues={data}
+      enableReinitialize
+      initialValues={initValue}
       validationSchema={schema}
       onSubmit={handleSubmit}
-      className={classes.container}
     >
-      {() => (
-        <FForm
-          noValidate
-          autoComplete="off"
-        >
-          { formFields }
-        </FForm>
-      )}
-
-      
+      {({ values, errors, touched, handleChange, handleBlur }) => {
+        return (
+          <FForm className={classes.container} noValidate autoComplete="off">
+            {Object.keys(fields).map(field => {
+              const { _type: type } = fields[field];
+              return (
+                <FormField
+                  key={field}
+                  type={type}
+                  name={field}
+                  value={values[field]}
+                  errors={errors[field]}
+                  touched={touched[field]}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              );
+            })}
+          </FForm>
+        );
+      }}
     </Formik>
-  )
-}
+  );
+};
 
 export default Form;

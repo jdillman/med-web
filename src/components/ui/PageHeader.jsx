@@ -3,6 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 // import Input from '@material-ui/core/Input';
 // import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -19,10 +20,6 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 const styles = theme => ({
   root: {
     width: '100%',
-  },
-  toolbar: {
-    paddingLeft: theme.spacing(1.5),
-    paddingRight: theme.spacing(1.5),
   },
   grow: {
     flexGrow: 1,
@@ -167,9 +164,9 @@ class PrimarySearchAppBar extends React.Component {
     );
 
     return (
-      <div className={classes.root}>
+      <React.Fragment>
         <AppBar position="static">
-          <Toolbar className={classes.toolbar} disableGutters variant="dense">
+          <Toolbar component={Container} className={classes.toolbar} variant="dense">
             <IconButton
               onClick={toggleDrawer}
               color="inherit"
@@ -227,7 +224,7 @@ class PrimarySearchAppBar extends React.Component {
         </AppBar>
         {renderMenu}
         {renderMobileMenu}
-      </div>
+      </React.Fragment>
     );
   }
 }
