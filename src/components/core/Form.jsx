@@ -8,64 +8,84 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/styles';
 
+import { SaveButton } from './Button';
+
 const useStyles = makeStyles(theme => ({
   container: {
     margin: theme.spacing(2),
-    width: '100%',
   },
+  buttonContainer: {
+    marginTop: theme.spacing(3),
+    paddingBottom: theme.spacing(2.5),
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+
   fieldRow: {
-    margin: theme.spacing(2),
+    margin: `${theme.spacing(2)}px 0`,
   },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  },
+  textField: {},
 }));
 
-const FormField = ({ name, type, errors, touched, ...restProps }) => {
+const parseMeta = schema => {
+  if (!schema.meta) {
+    return {};
+  }
+
+  const { readOnly } = schema.meta() || {};
+
+  return {
+    disabled: readOnly,
+  };
+};
+
+const FormField = ({ name, schema, errors, touched, ...restProps }) => {
   const classes = useStyles();
+  const { _type: type } = schema;
+
+  const formProps = {
+    name,
+    label: Humanize.titleCase(name),
+    ...restProps,
+    ...parseMeta(schema),
+  };
 
   let field;
   switch (type) {
     case 'date':
       field = (
         <KeyboardDatePicker
-          name={name}
+          fullWidth
           autoOk
           variant="inline"
           inputVariant="outlined"
-          label={Humanize.titleCase(name)}
           format="MM/dd/yyyy"
           InputAdornmentProps={{ position: 'start' }}
-          {...restProps}
+          {...formProps}
         />
       );
       break;
     case 'string':
       field = (
         <TextField
-          name={name}
-          label={Humanize.titleCase(name)}
+          fullWidth
           className={classes.textField}
           helperText={errors && touched && errors}
           margin="normal"
           variant="outlined"
-          fullWidth
-          {...restProps}
+          {...formProps}
         />
       );
       break;
     case 'boolean':
       field = (
         <FormControlLabel
-          name={name}
-          checked={restProps.value}
+          checked={formProps.value}
           control={<Switch />}
-          label={Humanize.titleCase(name)}
           className={classes.textField}
           margin="normal"
           variant="outlined"
-          {...restProps}
+          {...formProps}
         />
       );
       break;
@@ -75,8 +95,8 @@ const FormField = ({ name, type, errors, touched, ...restProps }) => {
   return <div className={classes.fieldRow}>{field}</div>;
 };
 
-const Form = ({ schema = {}, data = {} }) => {
-  const { fields } = schema;
+const Form = ({ fields = [] , schema = {}, data = {} }) => {
+  const { fields: allFields} = schema;
   const classes = useStyles();
 
   const handleSubmit = (values, actions) => {
@@ -86,8 +106,8 @@ const Form = ({ schema = {}, data = {} }) => {
   };
 
   // Build defaults from schema
-  const initValue = Object.keys(fields).reduce((acc, field) => {
-    acc[field] = data[field] || fields[field].default();
+  const initValue = fields.reduce((acc, field) => {
+    acc[field] = data[field] || allFields[field].default();
     return acc;
   }, {});
 
@@ -101,21 +121,21 @@ const Form = ({ schema = {}, data = {} }) => {
       {({ values, errors, touched, handleChange, handleBlur }) => {
         return (
           <FForm className={classes.container} noValidate autoComplete="off">
-            {Object.keys(fields).map(field => {
-              const { _type: type } = fields[field];
-              return (
-                <FormField
-                  key={field}
-                  type={type}
-                  name={field}
-                  value={values[field]}
-                  errors={errors[field]}
-                  touched={touched[field]}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              );
-            })}
+            {fields.map(field => (
+              <FormField
+                key={field}
+                name={field}
+                schema={allFields[field]}
+                value={values[field]}
+                errors={errors[field]}
+                touched={touched[field]}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            ))}
+            <div className={classes.buttonContainer}>
+              <SaveButton />
+            </div>
           </FForm>
         );
       }}

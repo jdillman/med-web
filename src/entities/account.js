@@ -1,14 +1,15 @@
-import * as Yup from 'yup';
+import { object, string, boolean, date } from 'yup';
 
-const schema = Yup.object().shape({
-  name: Yup.string()
+const schema = object().shape({
+  name: string()
     .default('ActName')
     .min(2)
     .required(),
-  active: Yup.boolean(),
-  active_at: Yup.date().nullable(),
-  created_at: Yup.date(),
-  updated_at: Yup.date(),
+  note: string().max(400),
+  active: boolean(),
+  active_at: date().nullable(),
+  created_at: date().meta({ readOnly: true  }),
+  updated_at: date().meta({ readOnly: true  }),
 });
 
 export { schema };

@@ -5,7 +5,7 @@ import HomeView from './views/HomeView';
 import DemoView from './views/DemoView';
 import LocationView from './views/LocationView';
 import PersonView from './views/PersonView';
-import AdminView from './views/AdminViewContainer';
+import AdminView from './views/AdminView';
 import AccountView from './views/AccountView';
 
 import { RouterContext } from '../lib/context';
