@@ -2,11 +2,8 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
-// import Typography from '@material-ui/core/Typography';
-// import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
-// import MenuIcon from '@material-ui/icons/Menu';
 
 const drawerWidth = 240;
 
@@ -27,9 +24,7 @@ const styles = theme => ({
 // eslint-disable-next-line
 class ResponsiveDrawer extends React.Component {
   render() {
-    const { classes, theme, open, onClose } = this.props;
-
-    console.log(theme);
+    const { classes, open, onClose } = this.props;
 
     const drawer = (
       <div>
@@ -42,7 +37,7 @@ class ResponsiveDrawer extends React.Component {
     );
 
     return (
-      <div className={classes.root}>
+      <nav className={classes.root}>
         { /* <Hidden mdUp> */}
         <Drawer
           variant="temporary"
@@ -70,7 +65,7 @@ class ResponsiveDrawer extends React.Component {
             {drawer}
           </Drawer> */}
         </Hidden>
-      </div>
+      </nav>
     );
   }
 }

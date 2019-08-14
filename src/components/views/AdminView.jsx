@@ -1,43 +1,55 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { entities } from '../../lib/entityService';
+import React from 'react';
 
-import Dashboard from '../layouts/Dashboard';
+import clsx from 'clsx';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import AccountList from '../ui/AccountList';
 
-const AdminTable = ({ data }) => {
-  return data.map(item => {
-    return (
-      <p key={item.id}>
-        <Link to={`/admin/account/${item.id}`}>{item.name}</Link>
-      </p>
-    );
-  })
+import View from '../layouts/View';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto',
+  },
+  paper: {
+    padding: theme.spacing(1),
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column',
+  },
+  fixedHeight: {
+    height: 288,
+  },
+}));
+
+const AdminView = ({ children }) => {
+  const classes = useStyles();
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  return (
+    <View title="Admin">
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={8} lg={9}>
+          <Paper className={fixedHeightPaper}>
+            <p>Admin - Go build something jonathan</p>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={4} lg={3}>
+          <Paper>
+            <AccountList />
+          </Paper>
+        </Grid>
+        <Grid item xs={12}>
+          <Paper className={classes.paper}>
+            { children }
+          </Paper>
+        </Grid>
+      </Grid>
+    </View>
+  );    
 };
 
-class AdminView extends Component {
-  componentDidMount() {
-    const { getAccounts } = this.props;
-
-    getAccounts();
-  }
-
-  render() {
-    const { accounts } = this.props;
-
-    return (
-      <Dashboard>
-        <p>Admin - Go build something jonathan</p>
-        <AdminTable data={accounts} />
-      </Dashboard>
-    );
-  }
-}
-
-const mapState = ({ entities: { accounts } }) => ({
-  accounts: accounts.allIds.map(id => accounts.byId[id]),
-});
-
-export default connect(mapState, {
-  getAccounts: entities.accounts.getAll,
-})(AdminView)
+export default AdminView;

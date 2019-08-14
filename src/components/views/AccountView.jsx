@@ -1,57 +1,46 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import useRouter from 'use-react-router';
+import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import { entities } from '../../lib/entityService';
-import Dashboard from '../layouts/Dashboard';
+import { schema } from '../../entities/account';
 
+import View from '../layouts/View';
 import Form from '../core/Form';
+import AccountList from '../ui/AccountList';
 
-// import PatientList from '../../containers/PatientListContainer';
-// import TaskList from '../../containers/TaskListContainer';
-//
-// import './HomeView.css';
+import { entities } from '../../lib/entityService';
 
-class AccountView extends Component {
-  componentDidMount() {
-    const {
-      getAccount,
-      match: {
-        params: { id },
-      },
-    } = this.props;
-
-    getAccount(id);
-  }
-
-  render() {
-    const { schema, account } = this.props;
-
-    return (
-      <Dashboard>
-        <Paper>
-          <Form schema={schema} data={account} />
-        </Paper>
-      </Dashboard>
-    );
-  }
+function AccountForm({ account }) {
+  return <Form fields={['active', 'name', 'note', 'created_at']} schema={schema} data={account} />;
 }
 
-const mapState = (
-  { entities: { accounts } },
-  {
-    match: {
-      params: { id },
-    },
+function AccountView({ id, ...restProps }) {
+  if (id) {
+    return <AccountForm id={id} {...restProps} />;
   }
-) => ({
-  schema: accounts.schema,
-  account: accounts.byId[id],
-});
 
-export default withRouter(connect(
-  mapState,
-  {
-    getAccount: entities.accounts.get,
-  }
-)(AccountView));
+  return <AccountList {...restProps} />;
+}
+
+export default props => {
+  const { match: { params: { id: accountId } } } = useRouter();
+  const account = useSelector(({ entities: { accounts } }) => accounts.byId[accountId]);
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(entities.accounts.getAll());
+  }, [])
+
+  return (
+    <View title={'Accounts'}>
+      <Grid container>
+        <Grid item xs={12}>
+          <Paper>
+            <AccountView account={account} id={accountId} {...props} />
+          </Paper>
+        </Grid>
+      </Grid>
+    </View>
+  );
+};

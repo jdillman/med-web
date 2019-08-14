@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Container from '@material-ui/core/Container';
+
 import { entities } from '../../lib/entityService';
-
-import Dashboard from '../layouts/Dashboard';
-
-// import PatientList from '../../containers/PatientListContainer';
-// import TaskList from '../../containers/TaskListContainer';
-// 
-// import './HomeView.css';
+import View from '../layouts/View';
 
 class HomeView extends Component {
   componentDidMount() {
@@ -21,10 +17,12 @@ class HomeView extends Component {
     const admin = true;
 
     return (
-      <Dashboard type="simple-nav">
-        <p>Home</p>
-        { admin && <Link to="/admin">Admin</Link> }
-      </Dashboard>
+      <View>
+        <Container>
+          <p>Home</p>
+          { admin && <Link to="/admin">Admin</Link> }
+        </Container>
+      </View>
     );
   }
 }

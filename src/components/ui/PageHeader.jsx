@@ -3,6 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 // import Input from '@material-ui/core/Input';
 // import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -163,9 +164,9 @@ class PrimarySearchAppBar extends React.Component {
     );
 
     return (
-      <div className={classes.root}>
+      <React.Fragment>
         <AppBar position="static">
-          <Toolbar>
+          <Toolbar component={Container} className={classes.toolbar} variant="dense">
             <IconButton
               onClick={toggleDrawer}
               color="inherit"
@@ -173,8 +174,8 @@ class PrimarySearchAppBar extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography className={classes.title} variant="h3" color="inherit" noWrap>
-              AdaCare
+            <Typography className={classes.title} variant="h4" color="inherit" noWrap>
+              {process.env.REACT_APP_TITLE}
             </Typography>
             {/*
             <div className={classes.search}>
@@ -223,7 +224,7 @@ class PrimarySearchAppBar extends React.Component {
         </AppBar>
         {renderMenu}
         {renderMobileMenu}
-      </div>
+      </React.Fragment>
     );
   }
 }

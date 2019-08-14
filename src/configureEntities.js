@@ -1,6 +1,6 @@
 /* 
-  An Entity is high level data model. By configuring an adapter and schema
-  you can generate an easy to use structure without unncessary boilerplate.
+  An Entity is high level data model. By configuring an adapter and yup schemas
+  you can generate an easy to use redux structure without unncessary boilerplate.
 
   Example:
   {
@@ -22,58 +22,15 @@
   });
 
 */
-// import { entityFieldTypes } from ''
 
-export const ENTITY = {
-  STRING: '',
-  UUID: 'uuid',
-  BOOL: 'bool',
-  DATE: 'date',
-  DATETIME: 'datetime',
+import accounts from './entities/account';
+import locations from './entities/location';
+import people from './entities/person';
+
+const entities = {
+  accounts,
+  locations,
+  people,
 };
 
-const entityConfigure = [{
-  adapter: {
-    path: 'accounts',
-    // advanced usercases
-    normalizer: () => { console.log('<--- coming in')},
-    serializer: () => { console.log('going out --->')},
-  },
-  schema: {
-    id: ENTITY.UUID,
-    name: ENTITY.STRING,
-    active: ENTITY.BOOL,
-    activeAt: ENTITY.DATETIME,
-    createdAt: ENTITY.DATETIME,
-    updatedAt: ENTITY.DATETIME,
-  },
-}];
-
-
-  // const { object, string, number, date } = require('yup')
-  // 
-  // const contactSchema = object({
-  //   name: string()
-  //     .required(),
-  //   age: number()
-  //     .required()
-  //     .positive()
-  //     .integer(),
-  //   email: string()
-  //     .email(),
-  //   website: string()
-  //     .url(),
-  //   createdOn: date()
-  //     .default(() => new Date())
-  // })
-  // 
-  // contactSchema.cast({
-  //   name: 'jimmy',
-  //   age: '24',
-  //   createdOn: '2014-09-23T19:25:25Z'
-  // })
-  // 
-
-
-
-export default entityConfigure;
+export default entities;
