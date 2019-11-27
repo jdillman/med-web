@@ -1,3 +1,4 @@
+/* This file should be generatable with a simple DSL */
 import { object, string, boolean, date } from 'yup';
 
 const locationSchema = object().shape({});
@@ -14,8 +15,6 @@ const schema = object().shape({
   updated_at: date().meta({ readOnly: true }),
 });
 
-export { schema };
-
 export default {
   adapter: {
     path: 'accounts',
@@ -23,5 +22,6 @@ export default {
     // serializer: item => { console.log(item, 'going out --->')},
   },
   schema,
+  formFields: ['active', 'name', 'note', 'created_at'],
   children: { locations: locationSchema },
 };

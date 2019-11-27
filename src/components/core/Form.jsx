@@ -32,6 +32,7 @@ const parseMeta = schema => {
     return {};
   }
 
+  // YUP specific schema
   const { readOnly } = schema.meta() || {};
 
   return {
@@ -42,7 +43,6 @@ const parseMeta = schema => {
 const FormField = ({ name, schema, errors, touched, ...restProps }) => {
   const classes = useStyles();
   const { _type: type } = schema;
-
   const formProps = {
     name,
     label: Humanize.titleCase(name),
@@ -95,8 +95,9 @@ const FormField = ({ name, schema, errors, touched, ...restProps }) => {
   return <div className={classes.fieldRow}>{field}</div>;
 };
 
-const Form = ({ fields = [] , schema = {}, data = {} }) => {
-  const { fields: allFields} = schema;
+const Form = ({ entity = {}, data = {} }) => {
+  const { schema, formFields } = entity;
+  const { fields: allFields } = schema;
   const classes = useStyles();
 
   const handleSubmit = (values, actions) => {
@@ -106,10 +107,12 @@ const Form = ({ fields = [] , schema = {}, data = {} }) => {
   };
 
   // Build defaults from schema
-  const initValue = fields.reduce((acc, field) => {
+  const initValue = formFields.reduce((acc, field) => {
     acc[field] = data[field] || allFields[field].default();
     return acc;
   }, {});
+
+  console.log(initValue);
 
   return (
     <Formik
@@ -118,27 +121,25 @@ const Form = ({ fields = [] , schema = {}, data = {} }) => {
       validationSchema={schema}
       onSubmit={handleSubmit}
     >
-      {({ values, errors, touched, handleChange, handleBlur }) => {
-        return (
-          <FForm className={classes.container} noValidate autoComplete="off">
-            {fields.map(field => (
-              <FormField
-                key={field}
-                name={field}
-                schema={allFields[field]}
-                value={values[field]}
-                errors={errors[field]}
-                touched={touched[field]}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            ))}
-            <div className={classes.buttonContainer}>
-              <SaveButton />
-            </div>
-          </FForm>
-        );
-      }}
+      {({ values, errors, touched, handleChange, handleBlur }) => (
+        <FForm className={classes.container} noValidate autoComplete="off">
+          {formFields.map(field => (
+            <FormField
+              key={field}
+              name={field}
+              schema={allFields[field]}
+              value={values[field]}
+              errors={errors[field]}
+              touched={touched[field]}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          ))}
+          <div className={classes.buttonContainer}>
+            <SaveButton />
+          </div>
+        </FForm>
+      )}
     </Formik>
   );
 };

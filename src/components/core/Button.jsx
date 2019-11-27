@@ -1,5 +1,4 @@
 import React from 'react';
-import clsx from 'clsx';
 import MUIButton from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -7,9 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 
 const useStyles = makeStyles(theme => ({
-  button: {
-    
-  },
+  button: {},
   icon: {
     marginLeft: theme.spacing(2),
   },
@@ -39,7 +36,7 @@ const SaveButton = () => {
   const classes = useStyles();
 
   return (
-    <Button>
+    <Button type="submit">
       Save
       <SaveIcon className={classes.icon} />
     </Button>

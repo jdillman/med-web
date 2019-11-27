@@ -167,15 +167,11 @@ class PrimarySearchAppBar extends React.Component {
       <React.Fragment>
         <AppBar position="static">
           <Toolbar component={Container} className={classes.toolbar} variant="dense">
-            <IconButton
-              onClick={toggleDrawer}
-              color="inherit"
-              aria-label="Open drawer"
-            >
+            <IconButton onClick={toggleDrawer} color="inherit" aria-label="Open drawer">
               <MenuIcon />
             </IconButton>
             <Typography className={classes.title} variant="h4" color="inherit" noWrap>
-              {process.env.REACT_APP_TITLE}
+              {process.env.TITLE}
             </Typography>
             {/*
             <div className={classes.search}>
