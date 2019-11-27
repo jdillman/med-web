@@ -16,7 +16,7 @@
     "ecmaFeatures": {
       "jsx": true,
       "experimentalObjectRestSpread": true
-    }j
+    }
   },
   "rules": {
     "import/extensions": "off",
