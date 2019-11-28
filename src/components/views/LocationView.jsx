@@ -7,7 +7,7 @@ import { entities } from '../../lib/entityService';
 import { useRouter } from '../../lib/context';
 
 import View from '../layouts/View';
-import Form from '../core/Form';
+import EntityForm from '../core/EntityForm';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,7 +38,7 @@ export default function LocationView() {
   return (
     <View>
       <Paper classes={classes.root}>
-        <Form />
+        <EntityForm />
       </Paper>
     </View>
   );

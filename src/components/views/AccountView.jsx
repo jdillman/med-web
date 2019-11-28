@@ -6,11 +6,11 @@ import Paper from '@material-ui/core/Paper';
 import { entities } from 'lib/entityService';
 import accountEntity from 'entities/account';
 import View from '../layouts/View';
-import Form from '../core/Form';
+import EntityForm from '../core/EntityForm';
 import AccountList from '../ui/AccountList';
 
 function AccountForm({ account }) {
-  return <Form entity={accountEntity} data={account} />;
+  return <EntityForm entity={accountEntity} data={account} />;
 }
 
 function AccountView({ id, ...restProps }) {
