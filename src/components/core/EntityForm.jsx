@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Humanize from 'humanize-plus';
 import { Formik, Form as FForm } from 'formik';
+import { entityActions } from 'lib/entityService';
 
 import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
@@ -95,31 +97,29 @@ const FormField = ({ name, schema, errors, touched, ...restProps }) => {
   return <div className={classes.fieldRow}>{field}</div>;
 };
 
-const Form = ({ entity = {}, data = {} }) => {
+const Form = ({ entity = {}, onSubmit, data }) => {
+  if (!data) {
+    return null;
+  }
+
   const { schema, formFields } = entity;
   const { fields: allFields } = schema;
   const classes = useStyles();
 
-  const handleSubmit = (values, actions) => {
-    console.log('submitting');
-    console.log(values);
-    console.log(actions);
-  };
-
   // Build defaults from schema
   const initValue = formFields.reduce((acc, field) => {
-    acc[field] = data[field] || allFields[field].default();
+    acc[field] = data[field] || allFields[field].default() || '';
     return acc;
   }, {});
 
-  console.log(initValue);
+  // console.log(initValue);
 
   return (
     <Formik
       enableReinitialize
       initialValues={initValue}
       validationSchema={schema}
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
     >
       {({ values, errors, touched, handleChange, handleBlur }) => (
         <FForm className={classes.container} noValidate autoComplete="off">
@@ -144,4 +144,29 @@ const Form = ({ entity = {}, data = {} }) => {
   );
 };
 
-export default Form;
+const EntityForm = ({ entity, id }) => {
+  const { name } = entity;
+  const actions = entityActions[name];
+  const { data, isLoading, errMsg } = useSelector(({ entities }) => ({
+    data: entities[name].byId[id],
+    isLoading: entities[`${name}Loading`],
+    errMsg: entities[`${name}Error`],
+  }));
+
+  // Fetch all
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(actions.getAll());
+  }, []);
+
+  const handleSubmit = useCallback(payload => {
+    console.log('in hanlde update', payload);
+    console.log(actions.update);
+    dispatch(actions.update(payload));
+  });
+
+  // Return form
+  return <Form onSubmit={handleSubmit} entity={entity} data={data} />;
+};
+
+export default EntityForm;

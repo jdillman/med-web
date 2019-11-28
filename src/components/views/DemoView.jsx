@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { entities } from '../../lib/entityService';
+import { entityActions } from '../../lib/entityService';
 
 // import PatientList from '../../containers/PatientListContainer';
 // import TaskList from '../../containers/TaskListContainer';
-// 
+//
 // import './HomeView.css';
 
 class HomeView extends Component {
@@ -19,7 +19,6 @@ class HomeView extends Component {
       <div>
         <section>
           <p>Demo Page, sell it here</p>
-          
         </section>
       </div>
     );
@@ -27,5 +26,5 @@ class HomeView extends Component {
 }
 
 export default connect(null, {
-  getAccounts: entities.accounts.getAll,
-})(HomeView)
+  getAccounts: entityActions.accounts.getAll,
+})(HomeView);

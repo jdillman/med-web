@@ -9,6 +9,7 @@ const schema = object().shape({
     .min(2)
     .required(),
   note: string().max(400),
+  note2: string().max(4),
   active: boolean().nullable(),
   active_at: date().nullable(),
   created_at: date().meta({ readOnly: true }),
@@ -16,12 +17,13 @@ const schema = object().shape({
 });
 
 export default {
+  name: 'accounts',
   adapter: {
     path: 'accounts',
     // normalizer: item => { console.log(item, '<--- coming in')},
     // serializer: item => { console.log(item, 'going out --->')},
   },
   schema,
-  formFields: ['active', 'name', 'note', 'created_at'],
+  formFields: ['active', 'name', 'note', 'note2', 'created_at'],
   children: { locations: locationSchema },
 };

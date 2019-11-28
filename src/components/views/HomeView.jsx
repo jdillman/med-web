@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
-
-import { entities } from '../../lib/entityService';
+import { entityActions } from '../../lib/entityService';
 import View from '../layouts/View';
 
 class HomeView extends Component {
@@ -20,7 +19,7 @@ class HomeView extends Component {
       <View>
         <Container>
           <p>Home</p>
-          { admin && <Link to="/admin">Admin</Link> }
+          {admin && <Link to="/admin">Admin</Link>}
         </Container>
       </View>
     );
@@ -28,5 +27,5 @@ class HomeView extends Component {
 }
 
 export default connect(null, {
-  getAccounts: entities.accounts.getAll,
-})(HomeView)
+  getAccounts: entityActions.accounts.getAll,
+})(HomeView);

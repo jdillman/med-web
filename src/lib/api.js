@@ -1,6 +1,11 @@
 const { API, BASEURL } = process.env;
 
-export default resource => {
+export default (resource, two) => {
+  console.log(resource, two);
+  // two contains the payload,
+  //
+  //
+
   return new Promise((resolve, reject) => {
     fetch(`${API}${BASEURL}${resource}`)
       .then(response => {

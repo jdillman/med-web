@@ -1,9 +1,4 @@
-import {
-  createTypes,
-  createReducer,
-  completeState,
-  completeReducer,
-} from 'redux-recompose';
+import { createTypes, createReducer, completeState, completeReducer } from 'redux-recompose';
 
 // TODO configurable
 import api from './api';
@@ -27,20 +22,24 @@ const reducerDescription = {
 };
 
 const actionCreator = (type, target, entity) => {
-  return (params) => ({
-    type,
-    target,
-    service: api.bind(this, target),
-    payload: params,
-    successSelector: payload => normalizeData(payload.data, entity),
-    failureSelector: response => () => {
-      console.log('failure', response);
-    },
-  });
+  return params => {
+    console.log(params);
+
+    return {
+      type,
+      target,
+      service: api.bind(this, target),
+      payload: params,
+      successSelector: payload => normalizeData(payload.data, entity),
+      failureSelector: response => () => {
+        console.log('failure', response);
+      },
+    };
+  };
 };
 
 // todo Not happy with this, move abstraction to an adapter
-const createApi = (target, entity) => {
+const createActions = (target, entity) => {
   return {
     getAll: actionCreator(CRUDactions.READ, target, entity),
     get: actionCreator(CRUDactions.READ, target, entity),
@@ -86,19 +85,18 @@ function normalizeData(data = [], entity) {
     allIds,
     byId,
     sortedIds,
-  }
+  };
 }
 
-const entities = {};
+const entityActions = {};
 const initState = {};
 
-Object.entries(entityConfig).forEach(([ target, entity ]) => {
-  const { schema } = entity;
-  initState[target] = { schema, ...entityState };
-  entities[target] = { ...createApi(target, entity)};
+Object.entries(entityConfig).forEach(([target, entity]) => {
+  initState[target] = { ...entityState };
+  entityActions[target] = { ...createActions(target, entity) };
 });
 
 const initialState = completeState(initState);
 
-export { entities };
+export { entityActions };
 export default createReducer(initialState, completeReducer(reducerDescription));
