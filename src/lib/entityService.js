@@ -1,7 +1,7 @@
 import { createTypes, createReducer, completeState, completeReducer } from 'redux-recompose';
 
 // TODO configurable
-import api from './api';
+import { create, list, update, remove } from './api';
 import entityConfig from '../configureEntities';
 
 const entityState = {
@@ -10,25 +10,34 @@ const entityState = {
   sortedIds: [],
 };
 
-// TODO configurable
 const CRUDactions = createTypes(['CREATE', 'READ', 'UPDATE', 'DELETE'], '@ENTITY');
-
-// this is completed to auto include _success _failure events/state. Actions
-// you don't want to have this behavior add to override
-// TODO configurable
 const reducerDescription = {
   primaryActions: [CRUDactions.CREATE, CRUDactions.READ, CRUDactions.UPDATE, CRUDactions.DELETE],
   override: {},
 };
 
+const apiMapper = type => {
+  switch (type) {
+    case CRUDactions.CREATE:
+      return create;
+    case CRUDactions.DELETE:
+      return remove;
+    case CRUDactions.UPDATE:
+      return update;
+    case CRUDactions.READ:
+    default:
+      return list;
+  }
+};
+
 const actionCreator = (type, target, entity) => {
   return params => {
-    console.log(params);
-
     return {
       type,
       target,
-      service: api.bind(this, target),
+      // Service function to be executed
+      service: apiMapper(type).bind(this, target),
+      // The params will be passed into the service function
       payload: params,
       successSelector: payload => normalizeData(payload.data, entity),
       failureSelector: response => () => {
@@ -38,7 +47,6 @@ const actionCreator = (type, target, entity) => {
   };
 };
 
-// todo Not happy with this, move abstraction to an adapter
 const createActions = (target, entity) => {
   return {
     getAll: actionCreator(CRUDactions.READ, target, entity),
